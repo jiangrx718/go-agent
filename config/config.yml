@@ -1,0 +1,46 @@
+app: account
+debug: true
+db:
+  dialect: mysql
+  dsn: root:123456@tcp(127.0.0.1:3306)/account?charset=utf8mb4&parseTime=True&loc=Local
+redis:
+  client:
+    account:
+      addr:
+        - 127.0.0.1:6379
+      db: 0
+      password:
+      type: single-node
+  default: default
+cron:
+  switch: false
+log:
+  level: debug
+  outputs:
+    - stdout
+    - ./logs/api.log
+auth:
+  jwt:
+    expire_hour: 720
+    secret: jiang_ruoxi
+elasticsearch:
+  engine:
+    demo_indices: rx.demo.alias
+    addresses:
+      - http://127.0.0.1:9200
+    username: elastic
+    password: LYBGheLm0!
+aws_s3:
+  aws_region: 1
+  aws_bucket: 2
+  aws_proxy: 3
+  aws_client_skip_verify: true
+  aws_endpoint_url: 4
+  aws_secret_id: 5
+  aws_secret_key: 6
+minio:
+  endpoint: localhost:9000
+  bucket:  my-bucket
+  secret_id: admin
+  secret_key: 123456!@#$%
+  use_ssl: false
