@@ -1,13 +1,13 @@
-account 项目，使用go语言编写，基于gin的account框架封装基础的相关信息，开箱即用
+go-agent 项目，使用go语言编写，基于gin的go-agent框架封装基础的相关信息，开箱即用
 
 ## 1.正式项目目录运行时结构
 
 ```
-account/
+go-agent/
 ├── commands/
 │   └── agenerate # 生成SQL ORM目录
 │   └── migrate   # 数据库建表 目录
-│   └── server    # account服务运行 目录
+│   └── server    # go-agent服务运行 目录
 ├── config/       # 配置文件 目录
 ├── gopkg/        # 核心基础依赖 目录
 ├── handler/      # 路由API 目录
@@ -23,7 +23,7 @@ account/
 go list -m
 
 # 修改模块名称
-go mod edit -module account1
+go mod edit -module go-agent-1
 ```
 ## Commands
 ```shell
