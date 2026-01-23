@@ -16,44 +16,34 @@ import (
 )
 
 var (
-	Q                    = new(Query)
-	SPictureBook         *sPictureBook
-	SPictureBookCategory *sPictureBookCategory
-	SPictureBookItem     *sPictureBookItem
+	Q            = new(Query)
+	SPictureBook *sPictureBook
 )
 
 func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	*Q = *Use(db, opts...)
 	SPictureBook = &Q.SPictureBook
-	SPictureBookCategory = &Q.SPictureBookCategory
-	SPictureBookItem = &Q.SPictureBookItem
 }
 
 func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 	return &Query{
-		db:                   db,
-		SPictureBook:         newSPictureBook(db, opts...),
-		SPictureBookCategory: newSPictureBookCategory(db, opts...),
-		SPictureBookItem:     newSPictureBookItem(db, opts...),
+		db:           db,
+		SPictureBook: newSPictureBook(db, opts...),
 	}
 }
 
 type Query struct {
 	db *gorm.DB
 
-	SPictureBook         sPictureBook
-	SPictureBookCategory sPictureBookCategory
-	SPictureBookItem     sPictureBookItem
+	SPictureBook sPictureBook
 }
 
 func (q *Query) Available() bool { return q.db != nil }
 
 func (q *Query) clone(db *gorm.DB) *Query {
 	return &Query{
-		db:                   db,
-		SPictureBook:         q.SPictureBook.clone(db),
-		SPictureBookCategory: q.SPictureBookCategory.clone(db),
-		SPictureBookItem:     q.SPictureBookItem.clone(db),
+		db:           db,
+		SPictureBook: q.SPictureBook.clone(db),
 	}
 }
 
@@ -67,24 +57,18 @@ func (q *Query) WriteDB() *Query {
 
 func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 	return &Query{
-		db:                   db,
-		SPictureBook:         q.SPictureBook.replaceDB(db),
-		SPictureBookCategory: q.SPictureBookCategory.replaceDB(db),
-		SPictureBookItem:     q.SPictureBookItem.replaceDB(db),
+		db:           db,
+		SPictureBook: q.SPictureBook.replaceDB(db),
 	}
 }
 
 type queryCtx struct {
-	SPictureBook         ISPictureBookDo
-	SPictureBookCategory ISPictureBookCategoryDo
-	SPictureBookItem     ISPictureBookItemDo
+	SPictureBook ISPictureBookDo
 }
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
-		SPictureBook:         q.SPictureBook.WithContext(ctx),
-		SPictureBookCategory: q.SPictureBookCategory.WithContext(ctx),
-		SPictureBookItem:     q.SPictureBookItem.WithContext(ctx),
+		SPictureBook: q.SPictureBook.WithContext(ctx),
 	}
 }
 

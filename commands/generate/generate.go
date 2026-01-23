@@ -19,8 +19,6 @@ func Command() *cli.Command {
 			g.UseDB(gorms.Client())
 			g.ApplyBasic(
 				model.SPictureBook{},
-				model.SPictureBookItem{},
-				model.SPictureBookCategory{},
 			)
 			g.Execute()
 			return nil
