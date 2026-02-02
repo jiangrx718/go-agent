@@ -9,5 +9,10 @@ type Agent interface {
 
 // NewLocalAgent 返回一个不会调用外部 LLM 的本地实现（用于开发与测试）
 func NewLocalAgent() Agent {
-    return &localAgent{}
+	return &localAgent{}
+}
+
+// NewEinoAgentFromEnv 返回一个使用 Eino 的实现
+func NewEinoAgentFromEnv() (Agent, error) {
+	return NewEinoAgent()
 }

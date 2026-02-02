@@ -12,6 +12,11 @@ import (
 // 并设置环境变量 OPENAI_API_KEY。示例：
 //   OPENAI_API_KEY=... go run -tags langchaingo ./...
 func NewAgentFromEnv() (Agent, error) {
+    // 优先检查 Eino Agent
+    if os.Getenv("USE_EINO_AGENT") == "1" {
+        return NewEinoAgentFromEnv()
+    }
+
     // 运行时开关：如果设置 USE_REMOTE_AGENT=1 且构建时启用了 langchaingo tag，
     // 可以返回真实实现。这里以简单方式说明流程。
     if os.Getenv("USE_REMOTE_AGENT") == "1" {
