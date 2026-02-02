@@ -253,54 +253,101 @@
         /* Markdown Styles Enhancement */
         .markdown-content {
             font-size: 16px;
-            line-height: 1.7;
+            line-height: 1.8;
             color: #2c2c2c;
+            word-break: break-word;
         }
 
-        .markdown-content h1, .markdown-content h2, .markdown-content h3 {
-            margin-top: 24px;
-            margin-bottom: 16px;
-            font-weight: 600;
-            color: #1a1a1a;
+        /* 标题样式（作为段落的可视化标题） */
+        .markdown-content .md-title {
+            margin: 0 0 12px 0;
+            padding: 10px 12px;
+            background: linear-gradient(90deg, rgba(0,122,255,0.06), rgba(16,163,127,0.03));
+            border-radius: 8px;
+            font-weight: 700;
+            color: #063c3a;
+            display: inline-block;
         }
 
-        .markdown-content h1 { font-size: 1.5em; border-bottom: 1px solid #eee; padding-bottom: 0.3em; }
-        .markdown-content h2 { font-size: 1.3em; }
-        .markdown-content h3 { font-size: 1.1em; }
-
-        .markdown-content p {
-            margin-bottom: 16px;
+        /* 文本块：保留换行（pre-wrap），并增加块间距 */
+        .markdown-content .text-block {
+            white-space: pre-wrap; /* 保持 Markdown 原始换行 */
+            margin-bottom: 12px;
+            padding: 8px 10px;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.02);
         }
 
-        .markdown-content ul, .markdown-content ol {
-            padding-left: 24px;
-            margin-bottom: 16px;
+        /* 重点展示（blockquote） */
+        .markdown-content .important-highlight {
+            border-left: 4px solid var(--primary-color);
+            background: linear-gradient(90deg, rgba(0,122,255,0.03), rgba(0,0,0,0.02));
+            color: #08314a;
+            padding: 12px 14px;
+            margin: 14px 0;
         }
 
-        .markdown-content li {
-            margin-bottom: 8px;
-        }
-
-        /* code / pre 风格调整，添加复制按钮容器 */
-        .markdown-content pre {
-            background: linear-gradient(180deg, #22252b, #1b1d20);
-            padding: 14px;
-            border-radius: 10px;
-            overflow-x: auto;
-            margin: 16px 0;
+        /* 代码容器与标签 */
+        .markdown-content .code-wrapper {
             position: relative;
-            box-shadow: 0 8px 20px rgba(2,6,23,0.38);
+            margin: 14px 0;
+        }
+        .markdown-content .code-label {
+            position: absolute;
+            left: 12px;
+            top: -12px;
+            background: linear-gradient(90deg,#0ea5a4,#0ea5f5);
+            color: white;
+            padding: 4px 8px;
+            font-size: 12px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(2,6,23,0.2);
+        }
+        /* 代码编辑器风格：行号 + 代码区 */
+        .code-editor {
+            display: flex;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.03);
+            box-shadow: 0 8px 20px rgba(2,6,23,0.22);
+            background: linear-gradient(180deg,#0b0e12,#0f1317);
+            position: relative;
+            max-height: 420px;
+        }
+        .code-editor .gutter {
+            background: rgba(0,0,0,0.15);
+            color: rgba(255,255,255,0.45);
+            padding: 10px 8px;
+            text-align: right;
+            user-select: none;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
+            font-size: 12px;
+            line-height: 1.6;
+            min-width: 44px;
+        }
+        .code-editor .gutter div { padding: 0 4px; }
+        .code-editor .code-content {
+            flex: 1;
+            padding: 10px;
+            overflow: auto;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #e6edf3;
+        }
+        .code-editor .language-label {
+            position: absolute;
+            right: 10px;
+            top: -12px;
+            background: rgba(0,0,0,0.45);
+            color: #e6edf3;
+            padding: 4px 8px;
+            font-size: 11px;
+            border-radius: 6px;
             border: 1px solid rgba(255,255,255,0.03);
         }
 
-        .markdown-content pre code {
-            display: block;
-            color: #e6edf3;
-            font-size: 0.9em;
-            line-height: 1.5;
-            white-space: pre;
-        }
-
+        /* 复制按钮微调，放在右上角代码区域以外 */
         .code-copy-btn {
             position: absolute;
             right: 10px;
@@ -316,10 +363,7 @@
             gap: 8px;
             align-items: center;
             backdrop-filter: blur(4px);
-        }
-
-        .code-copy-btn:hover {
-            background: rgba(255,255,255,0.09);
+            z-index: 5;
         }
 
         .copy-feedback {
@@ -332,42 +376,7 @@
             font-size: 12px;
             border-radius: 6px;
             display: none;
-            z-index: 5;
-        }
-
-        /* 图片自适应 */
-        .markdown-content img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-        }
-
-        /* 表格更现代 */
-        .markdown-content table {
-            border-collapse: collapse;
-            width: 100%;
-            margin: 16px 0;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.03);
-        }
-        .markdown-content th, .markdown-content td {
-            padding: 10px 12px;
-            text-align: left;
-        }
-        .markdown-content tr:nth-child(even) {
-            background: rgba(0,0,0,0.03);
-        }
-
-        /* 小提示风格 */
-        .markdown-content blockquote {
-            margin: 16px 0;
-            padding: 12px 16px;
-            border-left: 4px solid var(--primary-color);
-            background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
-            border-radius: 8px;
-            color: #e6edf3;
+            z-index: 6;
         }
 
         /* Scrollbar styling */
@@ -546,6 +555,10 @@
                                 fullResponse += data;
                                 // 实时渲染 Markdown
                                 contentDiv.innerHTML = marked.parse(fullResponse);
+
+                                // 格式化结构：区分标题/文本/代码/标签/重点等
+                                formatMarkdownStructure(contentDiv);
+
                                 // 重新应用代码高亮
                                 contentDiv.querySelectorAll('pre code').forEach((block) => {
                                     hljs.highlightElement(block);
@@ -613,8 +626,153 @@
             });
         }
 
-        function showCopyFeedback(pre) {
-            const fb = pre.querySelector('.copy-feedback');
+        // 新增：将渲染后的 HTML 结构进行块级分组、添加标签/标题/代码标签和重点样式
+        function formatMarkdownStructure(root) {
+            if (!root) return;
+            const children = Array.from(root.childNodes);
+            children.forEach(node => {
+                if (node.nodeType !== Node.ELEMENT_NODE) return;
+                // 按节点去重，允许后续新增节点被处理
+                if (node.dataset.processed === '1') return;
+                const tag = node.tagName.toLowerCase();
+
+                // 标题处理：添加 md-title 类（显示为段落标题）
+                if (/^h[1-6]$/.test(tag)) {
+                    node.classList.add('md-title');
+                    node.dataset.processed = '1';
+                    return;
+                }
+
+                // 代码块：将 pre 包裹到 code-wrapper，并在上方插入 label + 编辑器样式
+                if (tag === 'pre') {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'code-wrapper';
+                    const label = document.createElement('div');
+                    label.className = 'code-label';
+                    label.innerText = '代码';
+                    node.parentNode.insertBefore(wrapper, node);
+                    wrapper.appendChild(label);
+                    wrapper.appendChild(node);
+
+                    // 构建编辑器视图（行号、代码区、语言标签）
+                    makeCodeEditor(wrapper, node);
+
+                    node.dataset.processed = '1';
+                    return;
+                }
+
+                // 文本 / 列表 / 表格 / 引用 等作为 text-block
+                if (['p','ul','ol','table','blockquote'].includes(tag)) {
+                    node.classList.add('text-block');
+                    if (tag === 'blockquote') node.classList.add('important-highlight');
+
+                    // 检测段首 [标签] 前缀，提取为 badge
+                    const m = node.innerText.match(/^\s*\[([^\]]{1,20})\]\s*/);
+                    if (m) {
+                        const badge = document.createElement('span');
+                        badge.className = 'badge-tag';
+                        badge.innerText = m[1];
+                        node.innerHTML = node.innerHTML.replace(new RegExp('^\\s*\\[' + escapeRegExp(m[1]) + '\\]\\s*'), '');
+                        node.insertBefore(badge, node.firstChild);
+                    }
+
+                    node.dataset.processed = '1';
+                }
+            });
+        }
+
+        // 创建 code-editor：wrapper 是 code-wrapper，preNode 是原始 pre 元素
+        function makeCodeEditor(wrapper, preNode) {
+            // 防止重复创建
+            if (wrapper.dataset.editor === '1') return;
+            wrapper.dataset.editor = '1';
+
+            // code 元素
+            const code = preNode.querySelector('code') || preNode;
+
+            // 创建编辑器容器
+            const editor = document.createElement('div');
+            editor.className = 'code-editor';
+
+            // 创建行号 gutter
+            const gutter = document.createElement('div');
+            gutter.className = 'gutter';
+
+            // 创建代码内容容器并移动 preNode 进去
+            const content = document.createElement('div');
+            content.className = 'code-content';
+            // 保持原 pre 样式但移入 content
+            content.appendChild(preNode);
+
+            // 行号生成（基于当前代码文本行数）
+            const lines = (code.innerText || code.textContent || '').split('\n');
+            lines.forEach((_, idx) => {
+                const ln = document.createElement('div');
+                ln.innerText = idx + 1;
+                gutter.appendChild(ln);
+            });
+
+            // 语言检测（从 class 中提取）
+            let lang = 'text';
+            const cls = (code.className || '');
+            const m = cls.match(/language-([a-zA-Z0-9]+)/) || cls.match(/hljs language-([a-zA-Z0-9]+)/);
+            if (m) lang = m[1];
+
+            // 语言标签
+            const langLabel = document.createElement('div');
+            langLabel.className = 'language-label';
+            langLabel.innerText = lang.toUpperCase();
+
+            // 复制按钮与反馈：移动到 wrapper 顶部（避免覆盖代码滚动）
+            const copyBtn = document.createElement('button');
+            copyBtn.className = 'code-copy-btn';
+            copyBtn.type = 'button';
+            copyBtn.innerText = '复制';
+            copyBtn.addEventListener('click', async () => {
+                const text = code.innerText || code.textContent || '';
+                try {
+                    await navigator.clipboard.writeText(text);
+                    showCopyFeedback(wrapper);
+                } catch (err) {
+                    const ta = document.createElement('textarea');
+                    ta.value = text;
+                    document.body.appendChild(ta);
+                    ta.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(ta);
+                    showCopyFeedback(wrapper);
+                }
+            });
+
+            const feedback = document.createElement('div');
+            feedback.className = 'copy-feedback';
+            feedback.innerText = '已复制';
+
+            // 组装 editor
+            editor.appendChild(gutter);
+            editor.appendChild(content);
+
+            // 将编辑器插入 wrapper（label 已存在）
+            wrapper.appendChild(editor);
+            wrapper.appendChild(langLabel);
+            wrapper.appendChild(copyBtn);
+            wrapper.appendChild(feedback);
+
+            // 确保预存在的 pre 在 content 内显示格式正确
+            preNode.style.margin = '0';
+            preNode.style.background = 'transparent';
+            preNode.style.padding = '0';
+            preNode.style.border = 'none';
+
+            // 高亮并保证滚动同步时行号可见（如果 pre 内内容动态变化，可在外部再次调用）
+            if (window.hljs) {
+                const codeBlocks = wrapper.querySelectorAll('pre code');
+                codeBlocks.forEach(b => hljs.highlightElement(b));
+            }
+        }
+
+        function showCopyFeedback(container) {
+            const fb = container.querySelector('.copy-feedback');
             if (!fb) return;
             fb.style.display = 'inline-block';
             fb.style.opacity = '1';
@@ -625,10 +783,16 @@
             }, 900);
         }
 
-        // 初始化页面时也可绑定现有 code block 的复制按钮
+        // 初始化页面时也可绑定现有 code block 的复制按钮 & 格式化
         document.addEventListener('DOMContentLoaded', function() {
             addCopyButtons(document);
+            // 只格式化 chat 首个助手区域，针对流式渲染随时新增
+            const initial = document.querySelector('.markdown-content');
+            if (initial) formatMarkdownStructure(initial);
         });
+
+        // 在流式渲染结束或局部更新后，确保为新 pre 创建编辑器 & 复制按钮
+        // 在原有代码中已在流式部分调用 formatMarkdownStructure(contentDiv) 和 addCopyButtons(contentDiv)
     </script>
 </body>
 </html>
