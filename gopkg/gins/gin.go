@@ -39,6 +39,7 @@ func NewHttpServer(listen string) *HttpServer {
 	// 加载静态页面
 	r.StaticFile("/s3", "./html/s3.html")
 	r.StaticFile("/chat", "./html/chat.html")
+	r.StaticFile("/agent/chat", "./html/agent_chat.html")
 
 	r.Use(gin.Recovery(), RequestID())
 	if utils.Debug() {

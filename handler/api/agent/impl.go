@@ -23,19 +23,21 @@ func NewHandler(g *gin.RouterGroup) gins.Handler {
 
 func (h *Handler) RegisterRoutes() {
 	g := h.g.Group("/agent")
+	// 支持 POST 请求，使用 EventStreamHeadersMiddleware 中间件设置 SSE 头
 	g.POST("/chat", middleware.EventStreamHeadersMiddleware(), h.Chat)
 }
 
 // ChatRequest 请求结构
 type ChatRequest struct {
-	Prompt string `form:"prompt" binding:"required"`
-	Model  string `form:"model"`
+	Prompt string `form:"prompt" json:"prompt" binding:"required"`
+	Model  string `form:"model" json:"model"`
 }
 
 // Chat 流式问答接口
 func (h *Handler) Chat(c *gin.Context) {
 	var req ChatRequest
-	if err := c.Bind(&req); err != nil {
+	// ShouldBind 会根据 Content-Type 自动选择绑定方式（JSON 或 Form）
+	if err := c.ShouldBind(&req); err != nil {
 		gins.BadRequest(c, err)
 		return
 	}
