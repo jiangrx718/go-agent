@@ -70,3 +70,20 @@ func (a *EinoAgent) Handle(ctx context.Context, prompt string) (string, error) {
 
 	return resp.Content, nil
 }
+
+// StreamHandle 实现流式处理
+func (a *EinoAgent) StreamHandle(ctx context.Context, prompt string) (*schema.StreamReader[*schema.Message], error) {
+	// 将 prompt 转换为 Eino 消息
+	msgs := []*schema.Message{
+		schema.UserMessage(prompt),
+	}
+
+	// 生成流
+	stream, err := a.runnable.Stream(ctx, msgs)
+	if err != nil {
+		log.Sugar().Errorf("eino agent stream error: %v", err)
+		return nil, err
+	}
+
+	return stream, nil
+}

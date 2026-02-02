@@ -2,6 +2,7 @@ package api
 
 import (
 	"go-agent/gopkg/gins"
+	"go-agent/handler/api/agent"
 	"go-agent/handler/api/chinese"
 	"go-agent/handler/middleware"
 
@@ -28,6 +29,7 @@ func (h *Handler) RegisterRoutes() {
 	g := h.engine.Group("/api", middleware.RequestCapture())
 	handlers := []gins.Handler{
 		chinese.NewHandler(g),
+		agent.NewHandler(g),
 	}
 
 	for _, handler := range handlers {
