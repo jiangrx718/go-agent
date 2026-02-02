@@ -3,7 +3,6 @@ package api
 import (
 	"go-agent/gopkg/gins"
 	"go-agent/handler/api/chinese"
-	"go-agent/handler/api/picture_book"
 	"go-agent/handler/middleware"
 
 	"github.com/gin-contrib/cors"
@@ -28,7 +27,6 @@ func (h *Handler) RegisterRoutes() {
 
 	g := h.engine.Group("/api", middleware.RequestCapture())
 	handlers := []gins.Handler{
-		picture_book.NewHandler(g),
 		chinese.NewHandler(g),
 	}
 
