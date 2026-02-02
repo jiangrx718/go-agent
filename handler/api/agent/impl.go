@@ -3,6 +3,7 @@ package agent
 import (
 	"fmt"
 	"go-agent/gopkg/gins"
+	"go-agent/handler/middleware"
 	"go-agent/internal/agent"
 	"io"
 	"os"
@@ -22,7 +23,7 @@ func NewHandler(g *gin.RouterGroup) gins.Handler {
 
 func (h *Handler) RegisterRoutes() {
 	g := h.g.Group("/agent")
-	g.GET("/chat", h.Chat)
+	g.POST("/chat", middleware.EventStreamHeadersMiddleware(), h.Chat)
 }
 
 // ChatRequest 请求结构
@@ -34,7 +35,7 @@ type ChatRequest struct {
 // Chat 流式问答接口
 func (h *Handler) Chat(c *gin.Context) {
 	var req ChatRequest
-	if err := c.ShouldBindQuery(&req); err != nil {
+	if err := c.Bind(&req); err != nil {
 		gins.BadRequest(c, err)
 		return
 	}
@@ -42,6 +43,8 @@ func (h *Handler) Chat(c *gin.Context) {
 	// 设置模型
 	if req.Model != "" {
 		os.Setenv("OLLAMA_MODEL", req.Model)
+	} else {
+		os.Setenv("OLLAMA_MODEL", "glm-4.6:cloud")
 	}
 
 	// 强制使用 Eino Agent
@@ -65,12 +68,6 @@ func (h *Handler) Chat(c *gin.Context) {
 	}
 	defer stream.Close()
 
-	// 设置 SSE 头
-	c.Writer.Header().Set("Content-Type", "text/event-stream")
-	c.Writer.Header().Set("Cache-Control", "no-cache")
-	c.Writer.Header().Set("Connection", "keep-alive")
-	c.Writer.Header().Set("Transfer-Encoding", "chunked")
-
 	c.Stream(func(w io.Writer) bool {
 		chunk, err := stream.Recv()
 		if err == io.EOF {
@@ -82,8 +79,11 @@ func (h *Handler) Chat(c *gin.Context) {
 			return false
 		}
 
-		// 发送数据块
-		c.SSEvent("message", chunk.Content)
+		if chunk.Content != "" {
+			// 发送数据块
+			c.SSEvent("message", chunk.Content)
+		}
+
 		return true
 	})
 }
