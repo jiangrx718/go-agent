@@ -18,9 +18,9 @@ func NewEinoAgent() (*EinoAgent, error) {
 	// 默认为本地 Ollama 实例
 	baseURL := os.Getenv("OLLAMA_BASE_URL")
 	if baseURL == "" {
-		// OpenAI SDK usually appends /v1 automatically or expects base without /v1 depending on client
-		// But here we are using cloudwego/eino-ext/components/model/openai which uses meguminnnnnnnnn/go-openai
-		// Usually for Ollama, it should be http://localhost:11434/v1
+		// OpenAI SDK 通常会自动添加 /v1 后缀，或者根据客户端需求期望基础路径不含 /v1
+		// 但在这里，我们使用的是 cloudwego/eino-ext/components/model/openai，它使用的是 meguminnnnnnnnn/go-openai
+		// 对于 Ollama 来说，通常应该是 http://localhost:11434/v1 的形式
 		baseURL = "http://localhost:11434/v1"
 	}
 	modelName := os.Getenv("OLLAMA_MODEL")
